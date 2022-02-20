@@ -8,6 +8,7 @@ public class PlayerMovementController : MonoBehaviour
     Collider2D coll;
     Animator anim;
 
+    [Header("移動參數")]
     public float speed;
     
     // Start is called before the first frame update
@@ -19,13 +20,18 @@ public class PlayerMovementController : MonoBehaviour
     }
 
     // Update is called once per frame
+    void FixedUpdate()
+    {
+        GroundMovement();
+    }
     void Update()
     {
+    }
+
+    void GroundMovement(){
         var horizontalmove = Input.GetAxisRaw("Horizontal");
-
+        //print(horizontalmove);
         rb.velocity = new Vector2(horizontalmove * speed,rb.velocity.y);
-
-
 
     }
 }
