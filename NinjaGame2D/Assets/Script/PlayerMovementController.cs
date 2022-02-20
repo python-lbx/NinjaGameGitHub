@@ -12,9 +12,27 @@ public class PlayerMovementController : MonoBehaviour
     public float speed;
     private float horizontalmove;
 
+    [Header("跳躍參數")]
+    public float jumpForce;
+    public bool jumpPressed;
+    public bool isJump;
+
+
+
     [Header("角色狀態")]
     public bool isCrouch;
+    public bool isOnGround;
+    public bool isHeadBlock;
+
+    [Header("環境檢測")]
+    public Transform GroundCheckPoint;
+    public Transform TopCheckPoint;
+    public LayerMask groundLayer;
+    public float GroundCheckDistance;
+    public float TopCheckDistance;
     
+    //按鍵設置
+
     Vector2 colliderStandSize; //站立碰撞框尺寸
     Vector2 colliderStandOffset; //站立碰撞框位置
     Vector2 colliderCrouchSize; //下蹲碰撞框尺寸
@@ -42,6 +60,8 @@ public class PlayerMovementController : MonoBehaviour
     }
     void Update()
     {
+        PhysicalCheck();
+        jumpPressed = Input.GetButtonDown("Jump");
     }
 
     void GroundMovement(){
@@ -55,7 +75,7 @@ public class PlayerMovementController : MonoBehaviour
         {
             Crouch();
         }
-        else if(!Input.GetButton("Crouch") && isCrouch)
+        else if(!Input.GetButton("Crouch") && isCrouch && !isHeadBlock)
         {
             StandUp();
         }
@@ -85,5 +105,40 @@ public class PlayerMovementController : MonoBehaviour
        isCrouch = false;
        capsulecoll.size = colliderStandSize;
        capsulecoll.offset = colliderStandOffset;
+    }
+
+    void PhysicalCheck()
+    {
+        RaycastHit2D groundRay = Raycast(GroundCheckPoint,Vector2.down,GroundCheckDistance,groundLayer);
+        RaycastHit2D topRay = Raycast(TopCheckPoint,Vector2.up,TopCheckDistance,groundLayer);
+
+        
+        if(groundRay)
+        {
+            isOnGround = true;
+        }
+        else
+        {
+            isOnGround = false;
+        }
+
+        if(topRay)
+        {
+            isHeadBlock = true;
+        }
+        else
+        {
+            isHeadBlock = false;
+        }
+    }
+    RaycastHit2D Raycast(Transform pointpos, Vector2 raydir, float raydis,LayerMask layer)
+    {
+        RaycastHit2D hit = Physics2D.Raycast(pointpos.position,raydir,raydis,layer);
+
+        Color color = hit? Color.red:Color.green;
+
+        Debug.DrawRay(pointpos.position,raydir*raydis,color);
+
+        return hit;
     }
 }
