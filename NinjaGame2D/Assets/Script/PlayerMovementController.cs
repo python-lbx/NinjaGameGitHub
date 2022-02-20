@@ -10,6 +10,7 @@ public class PlayerMovementController : MonoBehaviour
 
     [Header("移動參數")]
     public float speed;
+    private float horizontalmove;
     
     // Start is called before the first frame update
     void Start()
@@ -29,9 +30,23 @@ public class PlayerMovementController : MonoBehaviour
     }
 
     void GroundMovement(){
-        var horizontalmove = Input.GetAxisRaw("Horizontal");
+        horizontalmove = Input.GetAxisRaw("Horizontal");
         //print(horizontalmove);
         rb.velocity = new Vector2(horizontalmove * speed,rb.velocity.y);
-
+        
+        FilpDirection();
     }
+
+    void FilpDirection()
+    {
+        if(horizontalmove <0 )
+        {
+            transform.localScale = new Vector2(-1,1);
+        }
+        else if(horizontalmove >0 )
+        {
+            transform.localScale = new Vector2(1,1);
+        }
+    }
+
 }
