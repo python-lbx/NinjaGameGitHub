@@ -17,6 +17,8 @@ public class PlayerMovementController : MonoBehaviour
     public bool jumpPressed;
     public bool isJump;
 
+    public int jumpTime;
+
 
 
     [Header("角色狀態")]
@@ -57,11 +59,15 @@ public class PlayerMovementController : MonoBehaviour
     void FixedUpdate()
     {
         GroundMovement();
+        Jump();
     }
     void Update()
     {
         PhysicalCheck();
-        jumpPressed = Input.GetButtonDown("Jump");
+        if(Input.GetButton("Jump") && jumpTime>0)
+        {
+            jumpPressed = true;
+        }
     }
 
     void GroundMovement(){
@@ -78,6 +84,27 @@ public class PlayerMovementController : MonoBehaviour
         else if(!Input.GetButton("Crouch") && isCrouch && !isHeadBlock)
         {
             StandUp();
+        }
+    }
+    void Jump()
+    {
+        if(isOnGround)
+        {
+            jumpTime = 2;
+            isJump = false; 
+        }
+        else if(jumpPressed && isOnGround)
+        {
+            isJump = true;
+            rb.velocity = new Vector2(rb.velocity.x,jumpForce);
+            jumpTime--;
+            jumpPressed = false;
+        }
+        else if(jumpPressed && jumpTime >0 && !isOnGround)
+        {
+            rb.velocity = new Vector2(rb.velocity.x,jumpForce);
+            jumpTime--;
+            jumpPressed = false;
         }
     }
 
