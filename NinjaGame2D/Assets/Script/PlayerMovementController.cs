@@ -16,7 +16,6 @@ public class PlayerMovementController : MonoBehaviour
     public float jumpForce;
     public bool jumpPressed;
     public bool isJump;
-
     public int jumpTime;
 
 
@@ -59,52 +58,50 @@ public class PlayerMovementController : MonoBehaviour
     void FixedUpdate()
     {
         GroundMovement();
-        Jump();
+        animController();
     }
     void Update()
     {
         PhysicalCheck();
-        if(Input.GetButton("Jump") && jumpTime>0)
+        if(isHeadBlock&&isCrouch&&isOnGround)
         {
-            jumpPressed = true;
+            return;
         }
+        Jump();
     }
 
-    void GroundMovement(){
+    void GroundMovement()
+    {
         horizontalmove = Input.GetAxisRaw("Horizontal");
         //print(horizontalmove);
         rb.velocity = new Vector2(horizontalmove * speed,rb.velocity.y);
         
         FilpDirection();
 
-        if(Input.GetButton("Crouch"))
+        if(Input.GetButton("Crouch") && isOnGround)
         {
             Crouch();
         }
-        else if(!Input.GetButton("Crouch") && isCrouch && !isHeadBlock)
+        else if(!Input.GetButton("Crouch") && isCrouch && !isHeadBlock || !isOnGround)
         {
             StandUp();
         }
     }
     void Jump()
     {
-        if(isOnGround)
-        {
-            jumpTime = 2;
-            isJump = false; 
-        }
-        else if(jumpPressed && isOnGround)
-        {
-            isJump = true;
-            rb.velocity = new Vector2(rb.velocity.x,jumpForce);
-            jumpTime--;
-            jumpPressed = false;
-        }
-        else if(jumpPressed && jumpTime >0 && !isOnGround)
+        if(Input.GetButtonDown("Jump") && isOnGround && jumpTime>0)
         {
             rb.velocity = new Vector2(rb.velocity.x,jumpForce);
             jumpTime--;
-            jumpPressed = false;
+        }
+        else if (Input.GetButtonDown("Jump") && jumpTime>0)
+        {
+            rb.velocity = new Vector2(rb.velocity.x,jumpForce);
+            jumpTime--;
+        }
+        else if(isOnGround)
+        {
+            jumpTime = 1;
         }
     }
 
@@ -167,5 +164,22 @@ public class PlayerMovementController : MonoBehaviour
         Debug.DrawRay(pointpos.position,raydir*raydis,color);
 
         return hit;
+    }
+
+    void animController()
+    {
+        anim.SetFloat("Speed",Mathf.Abs(horizontalmove));
+        anim.SetBool("IsCrouch",isCrouch);
+
+        if(rb.velocity.y >0)
+        {
+            anim.SetBool("IsJump",true);
+        }
+
+        if(isOnGround)
+        {
+            anim.SetBool("IsJump",false);
+            anim.SetBool("IsFall",true);
+        }
     }
 }
