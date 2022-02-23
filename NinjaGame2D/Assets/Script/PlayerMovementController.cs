@@ -58,10 +58,18 @@ public class PlayerMovementController : MonoBehaviour
     void FixedUpdate()
     {
         GroundMovement();
-        animController();
+        if(anim.GetCurrentAnimatorStateInfo(0).IsName("Attack_Ground"))
+        {
+            return;
+        }
+        else
+        {
+            FilpDirection();
+        }
     }
     void Update()
     {
+        animController();
         PhysicalCheck();
         if(isHeadBlock&&isCrouch&&isOnGround)
         {
@@ -75,8 +83,6 @@ public class PlayerMovementController : MonoBehaviour
         horizontalmove = Input.GetAxisRaw("Horizontal");
         //print(horizontalmove);
         rb.velocity = new Vector2(horizontalmove * speed,rb.velocity.y);
-        
-        FilpDirection();
 
         if(Input.GetButton("Crouch") && isOnGround)
         {

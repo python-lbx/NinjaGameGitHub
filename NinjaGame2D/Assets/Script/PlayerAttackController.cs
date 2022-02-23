@@ -6,6 +6,8 @@ public class PlayerAttackController : MonoBehaviour
 {
     Animator anim;
 
+    public GameObject Z_Attack_Box;
+
     [Header("普通攻擊")]
     public float Z_Attack_CD;
     public float Z_Attack_SCD; //Start Cool Down;
@@ -28,5 +30,15 @@ public class PlayerAttackController : MonoBehaviour
         {
             Z_Attack_SCD -= Time.deltaTime;
         }
+    }
+
+    void ZboxAttive()
+    {
+        Z_Attack_Box.SetActive(true);
+    }
+
+    void ZboxUnAttive()
+    {
+        Z_Attack_Box.SetActive(false);
     }
 }
