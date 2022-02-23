@@ -62,6 +62,10 @@ public class PlayerMovementController : MonoBehaviour
         {
             return;
         }
+        else if(anim.GetCurrentAnimatorStateInfo(0).IsName("Attack_Jump"))
+        {
+            return;
+        }
         else
         {
             FilpDirection();
