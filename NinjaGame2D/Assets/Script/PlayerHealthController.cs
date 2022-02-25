@@ -23,7 +23,7 @@ public class PlayerHealthController : MonoBehaviour
     {
         if(PlayerColl.gameObject.tag == "Enemy")
         {
-            
+            Health -= GameObject.FindObjectOfType<Enemy_Health_Test>().Damage;
         }
     }
 }

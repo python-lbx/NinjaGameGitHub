@@ -1326,6 +1326,7 @@ GameObject:
   - component: {fileID: 1783066329}
   - component: {fileID: 1783066330}
   - component: {fileID: 1783066331}
+  - component: {fileID: 1783066332}
   - component: {fileID: 1783066328}
   - component: {fileID: 1783066327}
   - component: {fileID: 1783066326}
@@ -1503,6 +1504,19 @@ MonoBehaviour:
   Z_Attack_Box: {fileID: 1624765592}
   Z_Attack_CD: 0.3
   Z_Attack_SCD: 0
+--- !u!114 &1783066332
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1783066324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0bbb5e8a8754fb49b7ccae817a11964, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Health: 0
 --- !u!1 &1816456636
 GameObject:
   m_ObjectHideFlags: 0
