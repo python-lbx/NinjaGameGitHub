@@ -7,6 +7,7 @@ public class PlayerMovementController : MonoBehaviour
     Rigidbody2D rb;
     CapsuleCollider2D capsulecoll;
     Animator anim;
+    PlayerHealthController PlayerHP;
 
     [Header("移動參數")]
     public float speed;
@@ -45,18 +46,24 @@ public class PlayerMovementController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         capsulecoll = GetComponent<CapsuleCollider2D>();
         anim = GetComponent<Animator>();
+        PlayerHP = GetComponent<PlayerHealthController>();
 
         //獲取碰撞框參數
         colliderStandSize = capsulecoll.size; //站立
         colliderStandOffset = capsulecoll.offset;
         colliderCrouchSize = new Vector2(0.7667918f,0.7667921f); //下蹲
         colliderCrouchOffset = new Vector2(-0.07691693f,-0.5154546f);
+        
 
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        if(PlayerHP.isHurt)
+        {
+            return;
+        }
         GroundMovement();
         if(anim.GetCurrentAnimatorStateInfo(0).IsName("Attack_Ground"))
         {
@@ -75,7 +82,7 @@ public class PlayerMovementController : MonoBehaviour
     {
         animController();
         PhysicalCheck();
-        if(isHeadBlock&&isCrouch&&isOnGround)
+        if(isHeadBlock&&isCrouch&&isOnGround || PlayerHP.isHurt)
         {
             return;
         }
