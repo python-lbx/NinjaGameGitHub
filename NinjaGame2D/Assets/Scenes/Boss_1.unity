@@ -2405,6 +2405,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2cab70897d872a4baafc8b5de859e40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NextLevelIsBoss: 0
+  NextLevelIsEnemy: 1
   BossName: 
   LevelName: Level_2
 --- !u!1 &2581986909845816461

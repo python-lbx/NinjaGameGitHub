@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 public class TranslateDoor : MonoBehaviour
 {
     Collider2D coll;
+    public bool NextLevelIsBoss;
+    public bool NextLevelIsEnemy;
     public string BossName;
     public string LevelName;
     // Start is called before the first frame update
@@ -24,12 +26,12 @@ public class TranslateDoor : MonoBehaviour
     {
         if(Door.gameObject.tag == "Player")
         {
-            if(BossName != null)
+            if(NextLevelIsBoss)
             {
                 SceneManager.LoadScene(BossName);
             }
             
-            if(LevelName != null)
+            if(NextLevelIsEnemy)
             {
                 SceneManager.LoadScene(LevelName);
             }
