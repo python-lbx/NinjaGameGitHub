@@ -187,6 +187,7 @@ public class PlayerMovementController : MonoBehaviour
     {
         anim.SetFloat("Speed",Mathf.Abs(horizontalmove));
         anim.SetBool("IsCrouch",isCrouch);
+        anim.SetBool("IsHurt",PlayerHP.isHurt);
 
         if(rb.velocity.y >0)
         {
