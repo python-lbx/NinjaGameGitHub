@@ -2484,6 +2484,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NextLevelIsBoss: 1
   NextLevelIsEnemy: 0
+  currentLevel: 0
+  nextLevel: 0
+  currentBossLevel: 0
+  nextBossLevel: 2
   BossName: Boss_2
   LevelName: 
 --- !u!1 &3068971695925631015
