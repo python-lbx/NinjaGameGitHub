@@ -6,19 +6,31 @@ using UnityEngine.SceneManagement;
 public class TranslateDoor : MonoBehaviour
 {
     Collider2D coll;
+    [Header("頭目戰")]
     public bool NextLevelIsBoss;
-    public bool NextLevelIsEnemy;
+    public string BossName;
     public int currentLevel;
     public int nextLevel;
+
+    public int current_LevelScore;
+    public int New_LevelScore;
+
+    [Header("小怪戰")]
+    public bool NextLevelIsEnemy;
+    public string LevelName;
     public int currentBossLevel;
     public int nextBossLevel;
-    public string BossName;
-    public string LevelName;
+
     // Start is called before the first frame update
     void Start()
     {
         coll = GetComponent<Collider2D>();
         currentLevel = PlayerPrefs.GetInt("levelsUnlocked");
+
+        if(SceneManager.GetActiveScene().buildIndex == 1)
+        {
+            current_LevelScore = PlayerPrefs.GetInt("LV1_Score");
+        }
     }
 
     // Update is called once per frame
@@ -33,10 +45,21 @@ public class TranslateDoor : MonoBehaviour
         {
             if(NextLevelIsBoss)
             {
+                //關卡
                 if(nextBossLevel > currentBossLevel)
                 {
                     PlayerPrefs.SetInt("boss_levelsUnlocked",nextBossLevel);
                 }
+
+                //分數
+                if(New_LevelScore>current_LevelScore)
+                {
+                    if(SceneManager.GetActiveScene().buildIndex == 1)
+                    {
+                        PlayerPrefs.SetInt("LV1_Score",New_LevelScore);
+                    }
+                }
+
                 Debug.Log("BossLevel"+PlayerPrefs.GetInt("boss_levelsUnlocked")+"Unlocked");
                 SceneManager.LoadScene(BossName);
             }
