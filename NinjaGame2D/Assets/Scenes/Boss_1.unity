@@ -2409,6 +2409,8 @@ MonoBehaviour:
   NextLevelIsEnemy: 1
   currentLevel: 0
   nextLevel: 2
+  currentBossLevel: 0
+  nextBossLevel: 0
   BossName: 
   LevelName: Level_2
 --- !u!1 &2581986909845816461
