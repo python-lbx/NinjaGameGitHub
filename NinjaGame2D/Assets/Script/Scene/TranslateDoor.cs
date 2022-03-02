@@ -12,7 +12,7 @@ public class TranslateDoor : MonoBehaviour
     public int currentLevel;
     public int nextLevel;
 
-    public int current_LevelScore;
+    public int Old_LevelScore;
     public int New_LevelScore;
 
     [Header("小怪戰")]
@@ -29,7 +29,7 @@ public class TranslateDoor : MonoBehaviour
 
         if(SceneManager.GetActiveScene().buildIndex == 1)
         {
-            current_LevelScore = PlayerPrefs.GetInt("LV1_Score");
+            Old_LevelScore = PlayerPrefs.GetInt("LV1_Score");
         }
     }
 
@@ -52,7 +52,7 @@ public class TranslateDoor : MonoBehaviour
                 }
 
                 //分數
-                if(New_LevelScore>current_LevelScore)
+                if(New_LevelScore>Old_LevelScore)
                 {
                     if(SceneManager.GetActiveScene().buildIndex == 1)
                     {

@@ -155,13 +155,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NextLevelIsBoss: 1
-  NextLevelIsEnemy: 0
+  BossName: Boss_1
   currentLevel: 0
   nextLevel: 0
+  Old_LevelScore: 0
+  New_LevelScore: 0
+  NextLevelIsEnemy: 0
+  LevelName: 
   currentBossLevel: 0
   nextBossLevel: 1
-  BossName: Boss_1
-  LevelName: 
 --- !u!61 &117250394
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -253,6 +255,38 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &123619660 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2411785604206728899, guid: 4638b5982414bd34885e09767645d684, type: 3}
+  m_PrefabInstance: {fileID: 1587825476}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!1 &297882903 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4981560462529328371, guid: 4638b5982414bd34885e09767645d684, type: 3}
+  m_PrefabInstance: {fileID: 1587825476}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &297882904
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 297882903}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87fa690e7f4c3e14cb7c207eb75b2418, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Score_Imgae: {fileID: 123619660}
+  Score_Text: {fileID: 1289886334}
+  Score_Max: 100
+  Score_Current: 0
 --- !u!1 &413863727
 GameObject:
   m_ObjectHideFlags: 0
@@ -1199,6 +1233,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1289886334 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 59728237420957936, guid: 4638b5982414bd34885e09767645d684, type: 3}
+  m_PrefabInstance: {fileID: 1587825476}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1401112869
 GameObject:
   m_ObjectHideFlags: 0
@@ -1882,6 +1927,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Health: 100
   Damage: 20
+  EnemyScore: 20
 --- !u!1 &1491944986
 GameObject:
   m_ObjectHideFlags: 0
