@@ -31,9 +31,7 @@ public class TranslateDoor : MonoBehaviour
         {
             Old_LevelScore = PlayerPrefs.GetInt("LV1_Score");
         }
-
-        
-        if(SceneManager.GetActiveScene().buildIndex == 2)
+        else if(SceneManager.GetActiveScene().buildIndex == 2)
         {
             Old_LevelScore = PlayerPrefs.GetInt("LV2_Score");
         }
@@ -64,8 +62,7 @@ public class TranslateDoor : MonoBehaviour
                     {
                         PlayerPrefs.SetInt("LV1_Score",New_LevelScore);
                     }
-
-                    if(SceneManager.GetActiveScene().buildIndex == 2)
+                    else if(SceneManager.GetActiveScene().buildIndex == 2)
                     {
                         PlayerPrefs.SetInt("LV2_Score",New_LevelScore);
                     }
