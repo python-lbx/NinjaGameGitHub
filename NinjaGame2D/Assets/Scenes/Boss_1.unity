@@ -1461,6 +1461,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Health: 100
   Damage: 20
+  EnemyScore: 0
 --- !u!1 &1491944986
 GameObject:
   m_ObjectHideFlags: 0
@@ -2409,7 +2410,7 @@ MonoBehaviour:
   BossName: 
   currentLevel: 0
   nextLevel: 2
-  current_LevelScore: 0
+  Old_LevelScore: 0
   New_LevelScore: 0
   NextLevelIsEnemy: 1
   LevelName: Level_2

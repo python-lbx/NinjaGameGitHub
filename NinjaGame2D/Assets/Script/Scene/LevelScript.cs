@@ -24,4 +24,9 @@ public class LevelScript : MonoBehaviour
         Debug.Log(PlayerPrefs.GetInt("levelsUnlocked"));
         SceneManager.LoadScene(0);
     }
+
+    public void BackToMenu()
+    {
+        SceneManager.LoadScene(0);
+    }
 }
