@@ -5,33 +5,31 @@ using UnityEngine;
 public class BossABehavior : MonoBehaviour
 {
     BoxCollider2D boxcoll;
-    public BossAClone bossAClone;
+    Rigidbody2D rb;
+
+    [Header("克隆體")]
     public GameObject BossAClone;
     public List<GameObject> Clones;
-
     public int RangePos;
     public int i;
 
     public float timer;
     public float timerstart;
+    public int time;
+
+    public enum Status {patrol,Fall};
+    public Status BossA_Status;
     
     // Start is called before the first frame update
     void Start()
     {
         boxcoll = GetComponent<BoxCollider2D>();
-        bossAClone = BossAClone.GetComponent<BossAClone>();
+        rb = GetComponent<Rigidbody2D>();
         
 
         for(i=0;i<5;i++)
         {
             Clones.Add(Instantiate(BossAClone,new Vector3(-10+(i*5),5,0),transform.rotation));
-            //Clones[i].SetActive(false);
-            if(i == RangePos)
-            {
-                transform.position = Clones[i].transform.position;
-
-                Clones[i].SetActive(false);
-            }
         }
     }
 
@@ -47,6 +45,31 @@ public class BossABehavior : MonoBehaviour
         {
             timerstart -= Time.deltaTime;
         }*/
+
+        switch (BossA_Status)
+        {
+            case Status.patrol:
+                rb.gravityScale = 0;
+                        if(timerstart <=0)
+                        {
+                            BossA_Status = Status.Fall;
+                            timerstart = timer;
+                        }
+                        else if(timerstart>0)
+                        {
+                            timerstart -= Time.deltaTime;
+                        }
+            break;
+            case Status.Fall:
+                if(time == 4)
+                {                    
+                    time = 0;
+                    BossA_Status = Status.patrol;
+                }
+            break;
+        }
+
+
     }
 
     void ChangePos()
@@ -57,9 +80,10 @@ public class BossABehavior : MonoBehaviour
         {
             if(i == RangePos)
             {
-                transform.position = Clones[i].transform.position;
+                transform.position = Clones[i].GetComponent<BossAClone>().startpos;
 
                 Clones[i].SetActive(false);
+                Clones[i].transform.position = Clones[i].GetComponent<BossAClone>().startpos;
             }
             else
             {
@@ -70,10 +94,10 @@ public class BossABehavior : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other) 
     {
-        if(other.gameObject.tag == "Ground")
-        {    
-            print("A");
-            bossAClone.ResetPos();        
+        if(other.gameObject.tag == "Ground" && time < 4)
+        {   
+            time++;
+            ChangePos();
         }
     }
 }

@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class BossAClone : MonoBehaviour
 {
+    BossABehavior bossA;
     BoxCollider2D boxcoll;
     public Vector3 startpos;
     // Start is called before the first frame update
     void Start()
-    {
+    {   
+        bossA = GameObject.Find("Square").GetComponent<BossABehavior>();
         boxcoll = GetComponent<BoxCollider2D>();
         startpos = new Vector3(transform.position.x,5,transform.position.z);
     }
@@ -16,11 +18,23 @@ public class BossAClone : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if(bossA.time == 4)
+        {
+            gameObject.SetActive(false);
+            transform.position = startpos;
+        }
     }
 
     public void ResetPos()
     {
         transform.position = startpos;
+    }
+
+    private void OnCollisionEnter2D(Collision2D other) 
+    {
+        if(other.gameObject.tag == "Ground" && bossA.time < 4)
+        {
+            //ResetPos();
+        }
     }
 }
