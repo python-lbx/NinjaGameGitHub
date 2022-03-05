@@ -1640,13 +1640,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5e5b86a8beda3247ad487a6a147c043, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bossAClone: {fileID: 0}
   BossAClone: {fileID: 7970919959009901000, guid: 44f1fc55732f88941b0589d32e93bfb6, type: 3}
   Clones: []
   RangePos: 0
   i: 0
   timer: 2
   timerstart: 0
+  time: 0
+  BossA_Status: 0
 --- !u!50 &1408363792
 Rigidbody2D:
   serializedVersion: 4
