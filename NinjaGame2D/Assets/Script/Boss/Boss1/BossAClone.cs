@@ -18,11 +18,11 @@ public class BossAClone : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(bossA.time == 4)
+        /*if(bossA.time == 4)
         {
             gameObject.SetActive(false);
             transform.position = startpos;
-        }
+        }*/
     }
 
     public void ResetPos()
@@ -32,9 +32,9 @@ public class BossAClone : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other) 
     {
-        if(other.gameObject.tag == "Ground" && bossA.time < 4)
+        if(other.gameObject.tag == "Ground")
         {
-            //ResetPos();
+            ResetPos();
         }
     }
 }

@@ -26,21 +26,31 @@ public class BossABehavior : MonoBehaviour
     public Transform leftDownPos;
     public Transform rightUpPos;
 
+    [Header("階段")]
+    public bool phase;
+    public float phaseTime;
+    public float StartphaseTime;
     public enum Status {patrol,Fall};
     public Status BossA_Status;
     
+    private void Awake() 
+    {
+        //製作分身後隱藏
+        for(i=0;i<5;i++)
+        {
+            Clones.Add(Instantiate(BossAClone,new Vector3(-10+(i*5),5,0),transform.rotation));
+            //Clones[i].SetActive(false);
+        }
+
+    }
     // Start is called before the first frame update
     void Start()
     {
         boxcoll = GetComponent<BoxCollider2D>();
         rb = GetComponent<Rigidbody2D>();
         
-        //製作分身後隱藏
-        for(i=0;i<5;i++)
-        {
-            Clones.Add(Instantiate(BossAClone,new Vector3(-10+(i*5),5,0),transform.rotation));
-            Clones[i].SetActive(false);
-        }
+
+        ChangePos();
 
         WaitTime = startWaitTime;
         movePos.position =  GetRandomPos();
@@ -50,16 +60,38 @@ public class BossABehavior : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        /*if(timerstart <=0)
-        {
-            ChangePos();
-            timerstart = timer;
-        }
-        else if(timerstart>0)
-        {
-            timerstart -= Time.deltaTime;
-        }*/
 
+        switch (BossA_Status)
+        {
+            case Status.patrol:
+            break;
+            case Status.Fall:
+            break;
+        }
+    }
+
+    void ChangePos()
+    {
+        RangePos = Random.Range(0,5);
+
+        for(i=0;i<5;i++)
+        {
+            if(i == RangePos)
+            {
+                transform.position = Clones[i].GetComponent<BossAClone>().startpos;
+
+                Clones[i].SetActive(false);
+            }
+            else
+            {
+                Clones[i].SetActive(true);
+            }
+        }
+    }
+
+    void RndPatrol()
+    {
+        rb.gravityScale = 0;
         transform.position = Vector2.MoveTowards(transform.position,movePos.position,speed * Time.deltaTime);
 
         if(Vector2.Distance(transform.position,movePos.position) < 0.1f)
@@ -74,51 +106,6 @@ public class BossABehavior : MonoBehaviour
                 WaitTime -= Time.deltaTime;
             }
         }
-
-        switch (BossA_Status)
-        {
-            case Status.patrol:
-                rb.gravityScale = 0;
-                        /*if(timerstart <=0)
-                        {
-                            BossA_Status = Status.Fall;
-                            timerstart = timer;
-                        }
-                        else if(timerstart>0)
-                        {
-                            timerstart -= Time.deltaTime;
-                        }*/
-            break;
-            case Status.Fall:
-               /* if(time == 4)
-                {                    
-                    time = 0;
-                    BossA_Status = Status.patrol;
-                }*/
-            break;
-        }
-
-
-    }
-
-    void ChangePos()
-    {
-        RangePos = Random.Range(0,5);
-
-        for(i=0;i<5;i++)
-        {
-            if(i == RangePos)
-            {
-                transform.position = Clones[i].GetComponent<BossAClone>().startpos;
-
-                Clones[i].SetActive(false);
-                Clones[i].transform.position = Clones[i].GetComponent<BossAClone>().startpos;
-            }
-            else
-            {
-                Clones[i].SetActive(true);
-            }
-        }
     }
 
     Vector2 GetRandomPos()
@@ -129,10 +116,9 @@ public class BossABehavior : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other) 
     {
-        if(other.gameObject.tag == "Ground" && time < 4)
+        if(other.gameObject.tag == "Ground")
         {   
-            //time++;
-            //ChangePos();
+            ChangePos();
         }
     }
 }
