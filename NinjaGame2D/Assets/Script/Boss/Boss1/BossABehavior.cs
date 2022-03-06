@@ -17,6 +17,15 @@ public class BossABehavior : MonoBehaviour
     public float timerstart;
     public int time;
 
+    [Header("巡邏")]
+    public float speed;
+    public float startWaitTime;
+    public float WaitTime;
+
+    public Transform movePos;
+    public Transform leftDownPos;
+    public Transform rightUpPos;
+
     public enum Status {patrol,Fall};
     public Status BossA_Status;
     
@@ -26,11 +35,16 @@ public class BossABehavior : MonoBehaviour
         boxcoll = GetComponent<BoxCollider2D>();
         rb = GetComponent<Rigidbody2D>();
         
-
+        //製作分身後隱藏
         for(i=0;i<5;i++)
         {
             Clones.Add(Instantiate(BossAClone,new Vector3(-10+(i*5),5,0),transform.rotation));
+            Clones[i].SetActive(false);
         }
+
+        WaitTime = startWaitTime;
+        movePos.position =  GetRandomPos();
+
     }
 
     // Update is called once per frame
@@ -46,11 +60,26 @@ public class BossABehavior : MonoBehaviour
             timerstart -= Time.deltaTime;
         }*/
 
+        transform.position = Vector2.MoveTowards(transform.position,movePos.position,speed * Time.deltaTime);
+
+        if(Vector2.Distance(transform.position,movePos.position) < 0.1f)
+        {
+            if(WaitTime <= 0)
+            {
+                movePos.position =  GetRandomPos();
+                WaitTime = startWaitTime;
+            }
+            else
+            {
+                WaitTime -= Time.deltaTime;
+            }
+        }
+
         switch (BossA_Status)
         {
             case Status.patrol:
                 rb.gravityScale = 0;
-                        if(timerstart <=0)
+                        /*if(timerstart <=0)
                         {
                             BossA_Status = Status.Fall;
                             timerstart = timer;
@@ -58,14 +87,14 @@ public class BossABehavior : MonoBehaviour
                         else if(timerstart>0)
                         {
                             timerstart -= Time.deltaTime;
-                        }
+                        }*/
             break;
             case Status.Fall:
-                if(time == 4)
+               /* if(time == 4)
                 {                    
                     time = 0;
                     BossA_Status = Status.patrol;
-                }
+                }*/
             break;
         }
 
@@ -92,12 +121,18 @@ public class BossABehavior : MonoBehaviour
         }
     }
 
+    Vector2 GetRandomPos()
+    {
+        Vector2 rndPos = new Vector2(Random.Range(leftDownPos.position.x,rightUpPos.position.x),Random.Range(leftDownPos.position.y,rightUpPos.position.y));
+        return rndPos;
+    }
+
     private void OnCollisionEnter2D(Collision2D other) 
     {
         if(other.gameObject.tag == "Ground" && time < 4)
         {   
-            time++;
-            ChangePos();
+            //time++;
+            //ChangePos();
         }
     }
 }
