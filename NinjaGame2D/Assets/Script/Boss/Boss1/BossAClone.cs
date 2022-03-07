@@ -28,6 +28,7 @@ public class BossAClone : MonoBehaviour
     public void ResetPos()
     {
         transform.position = startpos;
+        gameObject.SetActive(false);
     }
 
     private void OnCollisionEnter2D(Collision2D other) 

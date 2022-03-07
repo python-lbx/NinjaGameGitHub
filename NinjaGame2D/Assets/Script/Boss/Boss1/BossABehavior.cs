@@ -8,8 +8,8 @@ public class BossABehavior : MonoBehaviour
     Rigidbody2D rb;
 
     [Header("克隆體")]
-    public GameObject BossAClone;
-    public List<GameObject> Clones;
+    //public GameObject BossAClone;
+    public GameObject[] Clones;
     public int RangePos;
     public int i;
 
@@ -33,25 +33,12 @@ public class BossABehavior : MonoBehaviour
     public enum Status {patrol,Fall};
     public Status BossA_Status;
     
-    private void Awake() 
-    {
-        //製作分身後隱藏
-        for(i=0;i<5;i++)
-        {
-            Clones.Add(Instantiate(BossAClone,new Vector3(-10+(i*5),5,0),transform.rotation));
-            //Clones[i].SetActive(false);
-        }
-
-    }
     // Start is called before the first frame update
     void Start()
     {
         boxcoll = GetComponent<BoxCollider2D>();
         rb = GetComponent<Rigidbody2D>();
         
-
-        ChangePos();
-
         WaitTime = startWaitTime;
         movePos.position =  GetRandomPos();
 
@@ -64,8 +51,27 @@ public class BossABehavior : MonoBehaviour
         switch (BossA_Status)
         {
             case Status.patrol:
+            if(phaseTime>0)
+            {
+                
+                RndPatrol();
+                phaseTime -= Time.deltaTime;
+            }
+            else if(phaseTime<=0)
+            {
+                BossA_Status = Status.Fall;
+                rb.gravityScale = 1;
+                ChangePos();
+            }
             break;
             case Status.Fall:
+            if(time == 4)
+            {
+                time = 0;
+                phaseTime = 5;
+                CancelInvoke("ChangePos");
+                BossA_Status = Status.patrol;
+            }
             break;
         }
     }
@@ -78,8 +84,7 @@ public class BossABehavior : MonoBehaviour
         {
             if(i == RangePos)
             {
-                transform.position = Clones[i].GetComponent<BossAClone>().startpos;
-
+                transform.position = Clones[i].transform.position;
                 Clones[i].SetActive(false);
             }
             else
@@ -116,9 +121,10 @@ public class BossABehavior : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other) 
     {
-        if(other.gameObject.tag == "Ground")
-        {   
-            ChangePos();
+        if(BossA_Status == Status.Fall && time < 4)
+        {
+            Invoke("ChangePos",2f);
+            time ++;
         }
     }
 }
