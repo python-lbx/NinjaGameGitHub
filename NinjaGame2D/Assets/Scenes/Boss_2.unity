@@ -1743,7 +1743,7 @@ MonoBehaviour:
   i: 0
   timer: 2
   timerstart: 0
-  time: 2
+  time: 0
   speed: 5
   startWaitTime: 2
   WaitTime: 0
