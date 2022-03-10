@@ -41,6 +41,7 @@ public class BossABehavior : MonoBehaviour
         boxcoll = GetComponent<BoxCollider2D>();
         rb = GetComponent<Rigidbody2D>();
         
+        WaitTime = startWaitTime;
         phaseTime = 5; //巡邏階段時間
         BossA_Status = Status.patrol; //巡邏階段
 
@@ -89,7 +90,7 @@ public class BossABehavior : MonoBehaviour
                 time = 0;
                 phaseTime = 5;
                 CancelInvoke("ChangePos");
-                BossA_Status = Status.patrol;
+                BossA_Status = Status.Transform;
             }
             break;
         }
