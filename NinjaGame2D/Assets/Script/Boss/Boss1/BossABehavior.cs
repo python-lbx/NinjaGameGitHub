@@ -7,6 +7,8 @@ public class BossABehavior : MonoBehaviour
     BoxCollider2D boxcoll;
     Rigidbody2D rb;
 
+    public Transform transformPoint;
+
     [Header("克隆體")]
     //public GameObject BossAClone;
     public GameObject[] Clones;
@@ -30,7 +32,7 @@ public class BossABehavior : MonoBehaviour
     public bool phase;
     public float phaseTime;
     public float StartphaseTime;
-    public enum Status {patrol,Fall};
+    public enum Status {patrol,Fall,Transform};
     public Status BossA_Status;
     
     // Start is called before the first frame update
@@ -39,8 +41,9 @@ public class BossABehavior : MonoBehaviour
         boxcoll = GetComponent<BoxCollider2D>();
         rb = GetComponent<Rigidbody2D>();
         
-        WaitTime = startWaitTime;
-        movePos.position =  GetRandomPos();
+        phaseTime = 5; //巡邏階段時間
+        BossA_Status = Status.patrol; //巡邏階段
+
 
     }
 
@@ -50,6 +53,20 @@ public class BossABehavior : MonoBehaviour
 
         switch (BossA_Status)
         {
+            case Status.Transform:
+            if(phaseTime > 0)
+            {
+                transform.position = transformPoint.position; //時間內固定在傳送點
+                phaseTime -= Time.deltaTime; 
+            }
+            else if(phaseTime <= 0)
+            {
+                transform.position = GetRandomPos(); //時間結束後轉移至隨機點
+                phaseTime = 5; //巡邏階段時間
+                BossA_Status = Status.patrol;
+            }
+            break;
+
             case Status.patrol:
             if(phaseTime>0)
             {
@@ -59,11 +76,13 @@ public class BossABehavior : MonoBehaviour
             }
             else if(phaseTime<=0)
             {
+                WaitTime = startWaitTime;
                 BossA_Status = Status.Fall;
                 rb.gravityScale = 1;
                 ChangePos();
             }
             break;
+
             case Status.Fall:
             if(time == 4)
             {
