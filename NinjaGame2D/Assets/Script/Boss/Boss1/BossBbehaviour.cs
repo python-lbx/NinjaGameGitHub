@@ -5,6 +5,7 @@ using UnityEngine;
 public class BossBbehaviour : MonoBehaviour
 {
     public Transform transformPoint;
+    public BossABehavior BossA;
     [Header("巡邏")]
     public float Patrolspeed;
     public float startWaitTime;
@@ -25,15 +26,20 @@ public class BossBbehaviour : MonoBehaviour
     public bool phase;
     public float phaseTime;
     public float StartphaseTime;
-    public enum Status {patrol,HRush,Transform};
+    public enum Status {Idle,patrol,HRush,Transform,Transform_I};
     public Status BossB_Status;
 
     // Start is called before the first frame update
     void Start()
     {
+        BossA = GameObject.Find("BossA").GetComponent<BossABehavior>();
         BossBRndPos = Random.Range(0,4); //隨機點設定
+
+        //巡邏
         phaseTime = 5; //巡邏階段時間
-        BossB_Status = Status.patrol; //巡邏階段
+        //BossB_Status = Status.patrol; //巡邏階段
+
+        BossB_Status = Status.Idle;
 
     }
 
@@ -42,32 +48,32 @@ public class BossBbehaviour : MonoBehaviour
     {
         switch(BossB_Status)
         {
+            case Status.Idle:
+            break;
             case Status.Transform:
-            if(phaseTime > 0)
-            {
                 transform.position = transformPoint.position; //時間內固定在傳送點
-                phaseTime -= Time.deltaTime; 
+            break;
+            case Status.Transform_I:
+            if(phaseTime >0)
+            {
+                phaseTime -= Time.deltaTime;
+                transform.position = transformPoint.position; //時間內固定在傳送點
             }
             else if(phaseTime <= 0)
             {
-                transform.position = GetRandomPos(); //時間結束後轉移至隨機點
-                phaseTime = 5; //巡邏階段時間
+                phaseTime=5;
+                BossA.phaseTime = 5;
+                
                 BossB_Status = Status.patrol;
+                BossA.BossA_Status = BossABehavior.Status.patrol;
+
+                BossA.transform.position = BossA.movePos.position;
+                transform.position = movePos.position;
             }
             break;
 
             case Status.patrol:
-            if(phaseTime>0)
-            {
                 RndPatrol(); //時間內巡邏
-                phaseTime -= Time.deltaTime;
-            }
-            else if(phaseTime<=0)
-            {
-                WaitTime = startWaitTime;
-                transform.position = point[BossBRndPos].transform.position; //時間結束後傳送到隨機點
-                BossB_Status = Status.HRush;
-            }
             break;
 
             case Status.HRush:
@@ -75,7 +81,7 @@ public class BossBbehaviour : MonoBehaviour
             {
                 time = 0;
                 phaseTime =5;
-                BossB_Status = Status.Transform;
+                BossB_Status = Status.Transform_I;
             }
             else
             {
