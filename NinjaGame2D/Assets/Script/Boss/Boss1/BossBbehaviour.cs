@@ -26,8 +26,14 @@ public class BossBbehaviour : MonoBehaviour
     public bool phase;
     public float phaseTime;
     public float StartphaseTime;
-    public enum Status {Idle,patrol,HRush,Transform,Transform_I};
+    public enum Status {Idle,patrol,CircleMove,HRush,Transform,Transform_I};
     public Status BossB_Status;
+
+    
+    [Header("圓運動")]
+    public Transform RotationCenter;
+    public float AngularSpeed,RotationRaduis;
+    float posX,posY,angle;
 
     // Start is called before the first frame update
     void Start()
@@ -40,7 +46,7 @@ public class BossBbehaviour : MonoBehaviour
         //BossB_Status = Status.patrol; //巡邏階段
 
         BossB_Status = Status.Idle;
-
+        //BossB_Status = Status.CircleMove;
     }
 
     // Update is called once per frame
@@ -50,10 +56,12 @@ public class BossBbehaviour : MonoBehaviour
         {
             case Status.Idle:
             break;
-            case Status.Transform:
+            
+            case Status.Transform: //轉送待機
                 transform.position = transformPoint.position; //時間內固定在傳送點
             break;
-            case Status.Transform_I:
+
+            case Status.Transform_I: 
             if(phaseTime >0)
             {
                 phaseTime -= Time.deltaTime;
@@ -64,11 +72,8 @@ public class BossBbehaviour : MonoBehaviour
                 phaseTime=5;
                 BossA.phaseTime = 5;
                 
-                BossB_Status = Status.patrol;
-                BossA.BossA_Status = BossABehavior.Status.patrol;
-
-                BossA.transform.position = BossA.movePos.position;
-                transform.position = movePos.position;
+                BossB_Status = Status.CircleMove;
+                BossA.BossA_Status = BossABehavior.Status.CircleMove;
             }
             break;
 
@@ -85,8 +90,36 @@ public class BossBbehaviour : MonoBehaviour
             }
             else
             {
-                HorizontalRush();
+                if(phaseTime<=0)
+                {
+                    HorizontalRush();
+                }
+                else
+                {
+                    phaseTime -= Time.deltaTime;
+                }
             }
+            break;
+
+            case Status.CircleMove:
+                if(phaseTime >0)
+                {
+                    phaseTime -= Time.deltaTime;
+                    circle();
+                    RotationRaduis += Time.deltaTime;
+                }
+                else if(phaseTime <= 0)
+                {
+                    RotationRaduis = 5f;
+                    transform.position = movePos.position;
+                    BossA.transform.position = BossA.movePos.position;
+
+                    BossB_Status = Status.patrol;
+                    BossA.BossA_Status = BossABehavior.Status.patrol;
+
+                    phaseTime = 5;
+                    BossA.phaseTime = 5;
+                }
             break;
             
         }
@@ -144,6 +177,19 @@ public class BossBbehaviour : MonoBehaviour
             time++;
             BossBRndPos = Random.Range(0,4);
             transform.position = point[BossBRndPos].transform.position;
+        }
+    }
+
+    void circle()
+    {
+        posX = RotationCenter.position.x+Mathf.Cos(angle) * RotationRaduis;
+        posY = RotationCenter.position.y+Mathf.Sin(angle) * RotationRaduis;
+        transform.position = new Vector2(posX,posY);
+        angle = angle + Time.deltaTime * AngularSpeed;
+
+        if(angle >= 360)
+        {
+            angle = 0;
         }
     }
 }

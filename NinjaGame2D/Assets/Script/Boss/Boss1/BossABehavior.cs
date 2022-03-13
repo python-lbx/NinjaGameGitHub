@@ -29,12 +29,16 @@ public class BossABehavior : MonoBehaviour
     public Transform movePos;
     public Transform leftDownPos;
     public Transform rightUpPos;
+    
+    [Header("圓運動")]
+    public Transform Center;
+
 
     [Header("階段")]
     public bool phase;
     public float phaseTime;
     public float StartphaseTime;
-    public enum Status {Idle,patrol,Fall,Transform,Transform_I,Transform_II};
+    public enum Status {Idle,patrol,Fall,CircleMove,Transform,Transform_I,Transform_II};
     public Status BossA_Status;
     
     // Start is called before the first frame update
@@ -50,6 +54,7 @@ public class BossABehavior : MonoBehaviour
         //BossA_Status = Status.patrol; //巡邏階段
 
         BossA_Status = Status.Idle;
+        //BossA_Status = Status.CircleMove;
 
 
     }
@@ -72,9 +77,11 @@ public class BossABehavior : MonoBehaviour
                 BossB.BossB_Status = BossBbehaviour.Status.patrol;
             }
             break;
+
             case Status.Transform: //什麼也不做
                 transform.position = transformPoint.position; //時間內固定在傳送點
             break;
+
             case Status.Transform_I:
                 if(phaseTime > 0)
                 {
@@ -87,6 +94,7 @@ public class BossABehavior : MonoBehaviour
                     BossA_Status = Status.Fall;
                 }
             break;
+
             case Status.patrol:
             if(phaseTime>0)
             {
@@ -109,10 +117,13 @@ public class BossABehavior : MonoBehaviour
                 time = 0;
                 phaseTime = 5;
                 CancelInvoke("ChangePos");
-                BossA_Status = Status.Transform;
-                BossB.BossB_Status = BossBbehaviour.Status.HRush;
-                BossB.transform.position = BossB.point[BossB.BossBRndPos].transform.position;
+                Invoke("trans",2f);
             }
+            break;
+
+            case Status.CircleMove:
+            transform.position = Center.position;
+            rb.gravityScale = 0;
             break;
         }
     }
@@ -153,6 +164,15 @@ public class BossABehavior : MonoBehaviour
                 WaitTime -= Time.deltaTime;
             }
         }
+    }
+
+    void trans()
+    {
+        BossA_Status = Status.Transform;
+        BossB.phaseTime = 2f;
+        BossB.BossB_Status = BossBbehaviour.Status.HRush;
+        BossB.transform.position = BossB.point[BossB.BossBRndPos].transform.position;
+        CancelInvoke("trans");
     }
 
     Vector2 GetRandomPos()
