@@ -10,6 +10,8 @@ public class PlayerMovementController : MonoBehaviour
     PlayerHealthController PlayerHP;
 
     [Header("移動參數")]
+    public Joystick joystick;
+    public ButtonCheck2 buttonCheck;
     public float speed;
     private float horizontalmove;
 
@@ -91,9 +93,27 @@ public class PlayerMovementController : MonoBehaviour
 
     void GroundMovement()
     {
-        horizontalmove = Input.GetAxisRaw("Horizontal");
+        //電腦用
+        //horizontalmove = Input.GetAxisRaw("Horizontal");
         //print(horizontalmove);
-        rb.velocity = new Vector2(horizontalmove * speed,rb.velocity.y);
+        //rb.velocity = new Vector2(horizontalmove * speed,rb.velocity.y);
+
+        //手機用
+        rb.velocity = new Vector2(horizontalmove,rb.velocity.y);
+        if(joystick.Horizontal >= 0.2f)
+        {
+            horizontalmove = speed;
+        }
+        else if(joystick.Horizontal <= -0.2f)
+        {
+            horizontalmove = -speed;
+        }
+        else
+        {
+            horizontalmove = 0f;
+        }
+
+
 
         if(Input.GetButton("Crouch") && isOnGround)
         {
@@ -106,6 +126,8 @@ public class PlayerMovementController : MonoBehaviour
     }
     void Jump()
     {
+        //電腦用
+        /*
         if(Input.GetButtonDown("Jump") && isOnGround && jumpTime>0)
         {
             rb.velocity = new Vector2(rb.velocity.x,jumpForce);
@@ -120,6 +142,27 @@ public class PlayerMovementController : MonoBehaviour
         {
             jumpTime = 1;
         }
+        */
+
+        //手機用
+        if(buttonCheck.jumpPressed && isOnGround && jumpTime>0)
+        {
+            rb.velocity = new Vector2(rb.velocity.x,jumpForce);
+            jumpTime--;
+            buttonCheck.jumpPressed = false;
+        }
+        else if (buttonCheck.jumpPressed && jumpTime>0)
+        {
+            rb.velocity = new Vector2(rb.velocity.x,jumpForce);
+            jumpTime--;
+            buttonCheck.jumpPressed = false;
+        }
+        else if(isOnGround)
+        {
+            jumpTime = 1;
+            buttonCheck.jumpPressed = false;
+        }
+
     }
 
     void FilpDirection()

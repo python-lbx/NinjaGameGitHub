@@ -18,6 +18,11 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        joystickMove();
+    }
+
+    void joystickMove()
+    {
         print(joystick.Horizontal);
         rb.velocity = new Vector2(horizontalMove,rb.velocity.y);
         if(joystick.Horizontal >= 0.2f)
@@ -32,5 +37,10 @@ public class PlayerMovement : MonoBehaviour
         {
             horizontalMove = 0f;
         }
+    }
+
+    public void Jump()
+    {
+        rb.velocity = new Vector2(rb.velocity.x,speed);
     }
 }
