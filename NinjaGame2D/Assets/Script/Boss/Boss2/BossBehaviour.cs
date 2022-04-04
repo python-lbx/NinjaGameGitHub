@@ -42,11 +42,14 @@ public class BossBehaviour : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         player = GameObject.Find("Player");
-        faceright = true;
 
-        BossStatus = Status.Patrol;
+        //初始值
+        faceright = true;
         StartphaseTime = 5;
         shoottime = 3;
+        speed = 5f;
+        jumpForce = 6f;
+        skilltime = 0;
     }
 
     // Update is called once per frame
@@ -68,10 +71,12 @@ public class BossBehaviour : MonoBehaviour
             break;
 
             case Status.Shoot:
-            if(skilltime == 3)
+            if(skilltime == 3) //射擊次數達3次
             {
-                timer = 1.4f;
-                StartphaseTime = 5f;
+                timer = 1.4f; //丟炸彈時間
+                Stimer = timer;
+                StartphaseTime = 8.5f; //衝刺時間
+                skilltime = 0; //重置
                 BossStatus = Status.Dash;
             }
             else
@@ -90,16 +95,18 @@ public class BossBehaviour : MonoBehaviour
             }
             else if(StartphaseTime <= 0)
             {
+                timer = 1.3f;
+                Stimer = timer;
                 if(Vector2.Distance(transform.position,leftPoint.position)<0.1f)
                 {
                     faceright = true;
-                    timer = 1.4f;
+                    transform.Rotate(0f,180f,0);
                     BossStatus = Status.Jump;
 
                 }
                 else if(Vector2.Distance(transform.position,rightPoint.position)<0.1f)
                 {
-                    timer = 1.4f;
+                    transform.Rotate(0f,180f,0);
                     faceright = false;
                     BossStatus = Status.Jump;
                 }
@@ -107,10 +114,24 @@ public class BossBehaviour : MonoBehaviour
             break;
 
             case Status.Jump:
-            jumpForce = 11f;
-            speed = 11f;
-            BombDown();
-            Jump();
+            if(skilltime == 4)
+            {   
+                //初始值
+                timer = 1.4f;
+                Stimer = timer;
+                jumpForce =6f;
+                speed = 5f;
+                skilltime = 0;
+                StartphaseTime = 5f;
+                BossStatus = Status.Patrol;
+            }
+            else
+            {
+                jumpForce = 11f;
+                speed = 11f;
+                BombDown();
+                Jump();
+            }
             break;
         }
     }
@@ -177,10 +198,10 @@ public class BossBehaviour : MonoBehaviour
         }
         else if(shoottime == 0 && IsOnGround)
         {
-            skilltime ++;
-            shoottime = 3;
+            skilltime ++; //射擊次數
+            shoottime = 3; //子彈
+            StartphaseTime = 5; //巡邏時長
             BossStatus = Status.Patrol;
-            StartphaseTime = 5;
         }
     }
 
@@ -229,8 +250,13 @@ public class BossBehaviour : MonoBehaviour
     {
         if(other.gameObject.name == "Ground" && BossStatus == Status.Jump)
         {
+            skilltime ++;
+            flip();
             IsOnGround = true;
-            faceright = !faceright;
+        }
+        else if(other.gameObject.name == "Ground")
+        {
+            IsOnGround = true;
         }
     }
 

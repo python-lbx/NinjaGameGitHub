@@ -33,7 +33,6 @@ public class Bomb : MonoBehaviour
 
     void ChangeRed()
     {
-        SR.color = Color.red;
-        Destroy(this.gameObject,2f);
+        Destroy(this.gameObject);
     }
 }
