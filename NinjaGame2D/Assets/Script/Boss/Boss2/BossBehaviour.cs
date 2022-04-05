@@ -275,8 +275,6 @@ public class BossBehaviour : MonoBehaviour
 
     void animController()
     {
-        anim.SetFloat("Run",Mathf.Abs(rb.velocity.x));
-
         if(rb.velocity.y > 0)
         {
             anim.SetBool("Jump",true);
