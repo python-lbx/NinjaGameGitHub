@@ -5,6 +5,8 @@ using UnityEngine;
 public class BossBehaviour : MonoBehaviour
 {
     Rigidbody2D rb;
+    Animator anim;
+
     [Header("移動範圍")]
     public Transform leftPoint;
     public Transform rightPoint;
@@ -41,6 +43,7 @@ public class BossBehaviour : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
         player = GameObject.Find("Player");
 
         //初始值
@@ -55,6 +58,8 @@ public class BossBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        animController();
+
         switch(BossStatus)
         {
             case Status.Patrol:
@@ -265,6 +270,25 @@ public class BossBehaviour : MonoBehaviour
         if(other.gameObject.name == "Ground")
         {
             IsOnGround = false;
+        }
+    }
+
+    void animController()
+    {
+        anim.SetFloat("Run",Mathf.Abs(rb.velocity.x));
+
+        if(rb.velocity.y > 0)
+        {
+            anim.SetBool("Jump",true);
+        }
+        else if(rb.velocity.y < 0)
+        {
+            anim.SetBool("Jump",false);
+            anim.SetBool("Fall",true);
+        }
+        else if(IsOnGround)
+        {
+            anim.SetBool("Fall",false);
         }
     }
 }
