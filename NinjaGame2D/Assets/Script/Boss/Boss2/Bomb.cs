@@ -11,6 +11,10 @@ public class Bomb : MonoBehaviour
 
     public float force;
 
+    public int damage;
+
+    PlayerHealthController playerHealth;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -18,6 +22,8 @@ public class Bomb : MonoBehaviour
         coll = GetComponent<Collider2D>();
         SR = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        playerHealth = GameObject.FindObjectOfType<PlayerHealthController>();
+
 
         rb.AddForce(transform.up*force , ForceMode2D.Impulse);
 
@@ -29,9 +35,19 @@ public class Bomb : MonoBehaviour
         {
             anim.SetTrigger("Start");
         }
+        else if(other.gameObject.name == "Player")
+        {
+            anim.SetTrigger("Explore");
+            playerHealth.Health_Current -= damage;
+        }
     }
 
     void ChangeRed()
+    {
+        Destroy(this.gameObject);
+    }
+
+    void destroy()
     {
         Destroy(this.gameObject);
     }

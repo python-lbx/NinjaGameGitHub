@@ -19,9 +19,14 @@ public class Z_Attack_Box_Controller : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D ZBox) 
     {
-        if(ZBox.CompareTag("Enemy"))
+        /*if(ZBox.CompareTag("Enemy"))
         {
             FindObjectOfType<Enemy_Health_Test>().Health -= Damage;
+        }*/
+
+        if(ZBox.CompareTag("Boss"))
+        {
+            FindObjectOfType<BossHealthController>().health -= Damage;
         }
     }
 }

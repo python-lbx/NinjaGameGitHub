@@ -9,6 +9,9 @@ public class FireBallBullet : MonoBehaviour
     Animator anim;
 
     public float speed;
+    public int damage;
+
+    PlayerHealthController playerHealth;
 
     // Start is called before the first frame update
     void Start()
@@ -20,6 +23,8 @@ public class FireBallBullet : MonoBehaviour
         rb.velocity = transform.right * speed;
 
         Destroy(this.gameObject,2f);
+
+        playerHealth = GameObject.FindObjectOfType<PlayerHealthController>();
     }
 
     private void OnCollisionEnter2D(Collision2D other) 
@@ -27,6 +32,7 @@ public class FireBallBullet : MonoBehaviour
         if(other.gameObject.name == "Player")
         {
             anim.SetTrigger("Explore");
+            playerHealth.Health_Current -= damage;
         }
     }
 
