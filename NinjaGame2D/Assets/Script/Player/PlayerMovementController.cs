@@ -49,6 +49,7 @@ public class PlayerMovementController : MonoBehaviour
         capsulecoll = GetComponent<CapsuleCollider2D>();
         anim = GetComponent<Animator>();
         PlayerHP = GetComponent<PlayerHealthController>();
+        buttonCheck = GameObject.FindObjectOfType<ButtonCheck2>();
 
         //獲取碰撞框參數
         colliderStandSize = capsulecoll.size; //站立
