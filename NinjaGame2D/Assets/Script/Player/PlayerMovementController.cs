@@ -27,6 +27,7 @@ public class PlayerMovementController : MonoBehaviour
     public bool isCrouch;
     public bool isOnGround;
     public bool isHeadBlock;
+    public bool faceright;
 
     [Header("環境檢測")]
     public Transform GroundCheckPoint;
@@ -57,7 +58,7 @@ public class PlayerMovementController : MonoBehaviour
         colliderCrouchSize = new Vector2(0.7667918f,0.7667921f); //下蹲
         colliderCrouchOffset = new Vector2(-0.07691693f,-0.5154546f);
         
-
+        faceright = true;
     }
 
     // Update is called once per frame
@@ -76,8 +77,21 @@ public class PlayerMovementController : MonoBehaviour
         {
             return;
         }
+        else if(anim.GetCurrentAnimatorStateInfo(0).IsName("Skill_Jump_Ground"))
+        {   
+            rb.velocity = new Vector2(0,0);
+            rb.gravityScale = 0;
+            return;
+        }
+        else if(anim.GetCurrentAnimatorStateInfo(0).IsName("Skill_FireBall_Ground"))
+        {
+            rb.velocity = new Vector2(0,0);
+            rb.gravityScale = 0;
+            return;
+        }
         else
         {
+            rb.gravityScale = 2;
             FilpDirection();
         }
     }
@@ -168,13 +182,15 @@ public class PlayerMovementController : MonoBehaviour
 
     void FilpDirection()
     {
-        if(horizontalmove <0 )
-        {
-            transform.localScale = new Vector2(-1,1);
+        if(horizontalmove <0 && faceright)
+        {   
+            faceright = false;
+            transform.Rotate(0,180,0);
         }
-        else if(horizontalmove >0 )
+        else if(horizontalmove >0 && !faceright)
         {
-            transform.localScale = new Vector2(1,1);
+            faceright = true;
+            transform.Rotate(0,180,0);
         }
     }
 

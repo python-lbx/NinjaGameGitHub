@@ -6,6 +6,7 @@ public class ButtonCheck2 : MonoBehaviour
 {
     public bool jumpPressed;
     public bool Z_AttackPressed;
+    public bool firePressed;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,5 +27,10 @@ public class ButtonCheck2 : MonoBehaviour
     public void Z_Attack()
     {
         Z_AttackPressed = true;
+    }
+
+    public void FirePressed()
+    {
+        firePressed = true;
     }
 }
