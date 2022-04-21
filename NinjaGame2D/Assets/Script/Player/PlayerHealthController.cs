@@ -9,6 +9,8 @@ public class PlayerHealthController : MonoBehaviour
     public int Health_Current;
     public bool isHurt;
 
+    public GameObject GameOver;
+
     public Image HP_Image;
     public Text HP_Text;
     public Image MP_Image;
@@ -38,6 +40,7 @@ public class PlayerHealthController : MonoBehaviour
         if(Health_Current<=0)
         {
             FindObjectOfType<PlayerMovementController>().enabled = false;
+            GameOver.SetActive(true);
             Health_Current = 0;
             anim.SetTrigger("Dead");
         }

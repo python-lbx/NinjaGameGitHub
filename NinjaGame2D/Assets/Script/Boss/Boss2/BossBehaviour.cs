@@ -51,7 +51,7 @@ public class BossBehaviour : MonoBehaviour
         player = GameObject.Find("Player");
 
         //初始值
-        faceright = true;
+        faceright = false;
         StartphaseTime = 5;
         shoottime = 3;
         speed = 5f;
