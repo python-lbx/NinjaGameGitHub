@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class ShadowScript : MonoBehaviour
 {
-    Transform Boss; //目標對象
+    Transform Player; //目標對象
     SpriteRenderer thisSprite;
-    SpriteRenderer BossSprite; //目標對象
+    SpriteRenderer PlayerSprite; //目標對象
     Color color;
 
     [Header("時間控制參數")]
@@ -21,17 +21,17 @@ public class ShadowScript : MonoBehaviour
 
     private void OnEnable() 
     {
-        Boss = GameObject.FindGameObjectWithTag("Boss").transform;
+        Player = GameObject.FindGameObjectWithTag("Player").transform;
         thisSprite = GetComponent<SpriteRenderer>();
-        BossSprite = Boss.GetComponent<SpriteRenderer>();
+        PlayerSprite = Player.GetComponent<SpriteRenderer>();
 
         alpha = alphaSet;
 
-        thisSprite.sprite = BossSprite.sprite;
+        thisSprite.sprite = PlayerSprite.sprite;
 
-        transform.position = Boss.position;
-        transform.localScale = Boss.localScale;
-        transform.rotation = Boss.rotation;
+        transform.position = Player.position;
+        transform.localScale = Player.localScale;
+        transform.rotation = Player.rotation;
 
         activeStart = Time.time;
     }
@@ -40,7 +40,7 @@ public class ShadowScript : MonoBehaviour
     {
         alpha *= alphaMultiplier;
 
-        color = new Color(1,0.5f,0.5f,alpha); //偏紅色
+        color = new Color(0,0f,0.8f,alpha); //偏藍色
 
         thisSprite.color = color;
 

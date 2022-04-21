@@ -13,7 +13,7 @@ public class PlayerMovementController : MonoBehaviour
     public Joystick joystick;
     public ButtonCheck2 buttonCheck;
     public float speed;
-    private float horizontalmove;
+    public float horizontalmove;
 
     [Header("跳躍參數")]
     public float jumpForce;
@@ -114,18 +114,18 @@ public class PlayerMovementController : MonoBehaviour
         //rb.velocity = new Vector2(horizontalmove * speed,rb.velocity.y);
 
         //手機用
-        rb.velocity = new Vector2(horizontalmove,rb.velocity.y);
-        if(joystick.Horizontal >= 0.2f)
+        horizontalmove = joystick.Horizontal;
+        if(horizontalmove >= 0.2f)
         {
-            horizontalmove = speed;
+            rb.velocity = new Vector2(speed,rb.velocity.y);
         }
         else if(joystick.Horizontal <= -0.2f)
         {
-            horizontalmove = -speed;
+            rb.velocity = new Vector2(-speed,rb.velocity.y);
         }
         else
         {
-            horizontalmove = 0f;
+            rb.velocity = new Vector2(0,rb.velocity.y);
         }
 
 
