@@ -22,5 +22,11 @@ public class BossHealthController : MonoBehaviour
     {
         HP_Image.fillAmount = (float)Health_Current/(float)Health_Max;
         HP_Text.text = Health_Current.ToString() + "/" + Health_Max.ToString(); 
+
+        if(Health_Current <= 0)
+        {
+            Health_Current = 0;
+            FindObjectOfType<BossBehaviour>().BossStatus = BossBehaviour.Status.Death;
+        }
     }
 }

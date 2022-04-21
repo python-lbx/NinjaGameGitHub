@@ -15,11 +15,14 @@ public class PlayerHealthController : MonoBehaviour
     public Text MP_Text;
     CapsuleCollider2D capsulecoll;
     Rigidbody2D rb;
+
+    Animator anim;
     // Start is called before the first frame update
     void Start()
     {
         capsulecoll = GetComponent<CapsuleCollider2D>();
         rb = GetComponent<Rigidbody2D>();
+        anim = GetComponent<Animator>();
 
         Health_Current = Health_Max;
     }
@@ -34,7 +37,9 @@ public class PlayerHealthController : MonoBehaviour
 
         if(Health_Current<=0)
         {
+            FindObjectOfType<PlayerMovementController>().enabled = false;
             Health_Current = 0;
+            anim.SetTrigger("Dead");
         }
 
         HP_Image.fillAmount = (float)Health_Current/(float)Health_Max;
@@ -45,17 +50,23 @@ public class PlayerHealthController : MonoBehaviour
     {
         if(PlayerColl.gameObject.tag == "Enemy")
         {
-            Health_Current -= GameObject.FindObjectOfType<Enemy_Health_Test>().Damage;
+            //Health_Current -= GameObject.FindObjectOfType<Enemy_Health_Test>().Damage;
             if(transform.position.x < PlayerColl.gameObject.transform.position.x)
             {
-                rb.velocity = new Vector2(-5f,rb.velocity.y);
+                rb.velocity = new Vector2(-2f,rb.velocity.y);
                 isHurt = true;
             }
             else if(transform.position.x > PlayerColl.gameObject.transform.position.x)
             {
-                rb.velocity = new Vector2(5f,rb.velocity.y);
+                rb.velocity = new Vector2(2f,rb.velocity.y);
                 isHurt = true;
             }
         }
+    }
+
+    public void DeadAnim()
+    {
+        Destroy(this.gameObject);
+        Time.timeScale = 0;
     }
 }

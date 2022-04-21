@@ -33,6 +33,7 @@ public class FireBallBullet : MonoBehaviour
         {
             anim.SetTrigger("Explore");
             playerHealth.Health_Current -= damage;
+            coll.enabled = false;
         }
     }
 

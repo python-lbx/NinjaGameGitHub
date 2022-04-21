@@ -1793,7 +1793,7 @@ TilemapCollider2D:
   m_GameObject: {fileID: 1098570948}
   m_Enabled: 1
   m_Density: 1
-  m_Material: {fileID: 6200000, guid: db26c8902f8e4614c8c375b2c31b42fc, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
@@ -2422,7 +2422,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80819422ef1b41044b315cafbbe9dcd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Health_Max: 1000
+  Health_Max: 500
   Health_Current: 0
   HP_Image: {fileID: 493226202}
   HP_Text: {fileID: 545529535}
@@ -2829,7 +2829,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1956086517}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.7075305, y: -2.001124, z: -10}
+  m_LocalPosition: {x: -6.3281717, y: -2.0059662, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -3455,7 +3455,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   joystick: {fileID: 2929252283414904893}
   buttonCheck: {fileID: 1666652936}
-  speed: 5
+  speed: 6
   jumpForce: 8
   jumpPressed: 0
   isJump: 0

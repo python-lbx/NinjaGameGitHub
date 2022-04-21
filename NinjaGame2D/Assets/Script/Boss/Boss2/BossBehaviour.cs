@@ -7,6 +7,8 @@ public class BossBehaviour : MonoBehaviour
     Rigidbody2D rb;
     Animator anim;
 
+    Collider2D coll;
+
     [Header("移動範圍")]
     public Transform leftPoint;
     public Transform rightPoint;
@@ -34,7 +36,7 @@ public class BossBehaviour : MonoBehaviour
     //階段時間
     public float phaseTime;
     public float StartphaseTime;
-    public enum  Status {Patrol,Shoot,Dash,Jump}
+    public enum  Status {Patrol,Shoot,Dash,Jump,Death}
     public Status BossStatus;
 
 
@@ -44,6 +46,8 @@ public class BossBehaviour : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        coll = GetComponent<Collider2D>();
+
         player = GameObject.Find("Player");
 
         //初始值
@@ -137,6 +141,11 @@ public class BossBehaviour : MonoBehaviour
                 BombDown();
                 Jump();
             }
+            break;
+
+            case Status.Death:
+            coll.enabled = false;
+            anim.SetTrigger("Death");
             break;
         }
     }
@@ -275,7 +284,7 @@ public class BossBehaviour : MonoBehaviour
 
     void animController()
     {
-        if(rb.velocity.y > 0)
+        if(rb.velocity.y > 0 && !IsOnGround)
         {
             anim.SetBool("Jump",true);
         }
@@ -288,5 +297,11 @@ public class BossBehaviour : MonoBehaviour
         {
             anim.SetBool("Fall",false);
         }
+    }
+
+    public void DeathAnim()
+    {
+        rb.velocity = new Vector2(0,5f);
+        Destroy(this.gameObject,3f);
     }
 }
