@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BossBehaviour : MonoBehaviour
 {
-    Rigidbody2D rb;
+    public Rigidbody2D rb;
     Animator anim;
 
     Collider2D coll;

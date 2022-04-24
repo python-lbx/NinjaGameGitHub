@@ -8,6 +8,7 @@ public class PlayerMovementController : MonoBehaviour
     CapsuleCollider2D capsulecoll;
     Animator anim;
     PlayerHealthController PlayerHP;
+    PlayerAttackController PlayerAC;
 
     [Header("移動參數")]
     public Joystick joystick;
@@ -28,6 +29,7 @@ public class PlayerMovementController : MonoBehaviour
     public bool isOnGround;
     public bool isHeadBlock;
     public bool faceright;
+    public int facedirection;
 
     [Header("環境檢測")]
     public Transform GroundCheckPoint;
@@ -50,6 +52,7 @@ public class PlayerMovementController : MonoBehaviour
         capsulecoll = GetComponent<CapsuleCollider2D>();
         anim = GetComponent<Animator>();
         PlayerHP = GetComponent<PlayerHealthController>();
+        PlayerAC = GetComponent<PlayerAttackController>();
         buttonCheck = GameObject.FindObjectOfType<ButtonCheck2>();
 
         //獲取碰撞框參數
@@ -64,7 +67,7 @@ public class PlayerMovementController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(PlayerHP.isHurt)
+        if(PlayerHP.isHurt || PlayerAC.Dashing)
         {
             return;
         }
@@ -104,6 +107,13 @@ public class PlayerMovementController : MonoBehaviour
             return;
         }
         Jump();
+
+        if(PlayerHP.isHurt)
+        {
+            buttonCheck.dashPressed = false;
+            PlayerAC.Dashing = false;
+            rb.velocity = new Vector2(0,0);
+        }
     }
 
     void GroundMovement()
@@ -115,11 +125,12 @@ public class PlayerMovementController : MonoBehaviour
 
         //手機用
         horizontalmove = joystick.Horizontal;
+
         if(horizontalmove >= 0.2f)
         {
             rb.velocity = new Vector2(speed,rb.velocity.y);
         }
-        else if(joystick.Horizontal <= -0.2f)
+        else if(horizontalmove <= -0.2f)
         {
             rb.velocity = new Vector2(-speed,rb.velocity.y);
         }
@@ -184,11 +195,13 @@ public class PlayerMovementController : MonoBehaviour
     {
         if(horizontalmove <0 && faceright)
         {   
+            facedirection = -1;
             faceright = false;
             transform.Rotate(0,180,0);
         }
         else if(horizontalmove >0 && !faceright)
         {
+            facedirection = 1;
             faceright = true;
             transform.Rotate(0,180,0);
         }

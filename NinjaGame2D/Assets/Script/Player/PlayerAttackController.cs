@@ -7,6 +7,7 @@ public class PlayerAttackController : MonoBehaviour
     Rigidbody2D rb;
     Animator anim;
     PlayerMovementController PlayerMovement;
+    PlayerHealthController playerHealth;
     public ButtonCheck2 buttonCheck;
 
     public GameObject Z_Attack_Box;
@@ -25,7 +26,7 @@ public class PlayerAttackController : MonoBehaviour
     [Header("衝刺")]
     public float dashTime;//dash時長
     private float dashTimeLeft; //dash剩余時間
-    private float LastDash = 10f; //上一次dash時間點
+    private float LastDash = -10f; //上一次dash時間點
     public float dashCoolDown;
     public float dashSpeed;
     public bool Dashing;
@@ -36,6 +37,7 @@ public class PlayerAttackController : MonoBehaviour
         anim = GetComponent<Animator>();
         rb = GetComponent<Rigidbody2D>();
         PlayerMovement = GetComponent<PlayerMovementController>();
+        playerHealth = GetComponent<PlayerHealthController>();
         buttonCheck = GameObject.FindObjectOfType<ButtonCheck2>();
 
         
@@ -92,15 +94,19 @@ public class PlayerAttackController : MonoBehaviour
 
         if(buttonCheck.dashPressed)
         {
-            if(Time.time >= (LastDash + dashCoolDown))
+            if((Time.time >= (LastDash + dashCoolDown)) && PlayerMovement.horizontalmove !=0)
             {   
                 buttonCheck.dashPressed = false;
                 ReadyToDash();
             }
             else
             {
-                buttonCheck.dashPressed = false;
+            buttonCheck.dashPressed = false;
             }
+        }
+        else
+        {
+            buttonCheck.dashPressed = false;
         }
 
     }
@@ -135,13 +141,15 @@ public class PlayerAttackController : MonoBehaviour
         {
             if(dashTimeLeft >0)
             {
-                rb.velocity = new Vector2(dashSpeed,20 );
+                gameObject.layer = LayerMask.NameToLayer("Invincible");
+                rb.velocity = new Vector2(dashSpeed * PlayerMovement.facedirection,rb.velocity.y );
                 dashTimeLeft -= Time.deltaTime;
                 ShadowPool.instance.GetFormPool();
             }
             else if(dashTimeLeft <= 0)
             {
                 Dashing = false;
+                gameObject.layer = LayerMask.NameToLayer("Player");
             }
              
         }

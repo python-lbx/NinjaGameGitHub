@@ -3154,7 +3154,7 @@ RectTransform:
   m_Children:
   - {fileID: 48147471}
   m_Father: {fileID: 1666652935}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
@@ -3207,7 +3207,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1666652936}
         m_TargetAssemblyTypeName: ButtonCheck2, Assembly-CSharp
-        m_MethodName: FirePressed
+        m_MethodName: DashPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3509,8 +3509,8 @@ RectTransform:
   - {fileID: 199471051}
   - {fileID: 299318833}
   - {fileID: 1904076532}
-  - {fileID: 1767940596}
   - {fileID: 1539284919}
+  - {fileID: 1767940596}
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3526,7 +3526,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1666652931}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13ac60c9755d1dd4cab98150ce050c44, type: 3}
   m_Name: 
@@ -3534,6 +3534,7 @@ MonoBehaviour:
   jumpPressed: 0
   Z_AttackPressed: 0
   firePressed: 0
+  dashPressed: 0
 --- !u!114 &1666652937
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3596,11 +3597,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1728017341}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e83e5a30f1d004f4dba3c7a79a908296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb: {fileID: 0}
   leftPoint: {fileID: 192727899}
   rightPoint: {fileID: 398054669}
   bombup: {fileID: 2361795305704754043, guid: 51d9f76358a464445aec0ee3d50a0060, type: 3}
@@ -3778,7 +3780,7 @@ RectTransform:
   - {fileID: 334248340}
   - {fileID: 1085556772}
   m_Father: {fileID: 1666652935}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4838,9 +4840,10 @@ MonoBehaviour:
   Z_Attack_SCD: 0
   Fire_CD: 2
   Fire_SCD: 0
-  dashTime: 0
-  dashCoolDown: 0
-  dashSpeed: 0
+  dashTime: 0.15
+  dashCoolDown: 2
+  dashSpeed: 25
+  Dashing: 0
 --- !u!114 &1285010423107678475
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4856,6 +4859,7 @@ MonoBehaviour:
   joystick: {fileID: 2929252283414904893}
   buttonCheck: {fileID: 1666652936}
   speed: 6
+  horizontalmove: 0
   jumpForce: 8
   jumpPressed: 0
   isJump: 0
@@ -4864,6 +4868,7 @@ MonoBehaviour:
   isOnGround: 0
   isHeadBlock: 0
   faceright: 0
+  facedirection: 0
   GroundCheckPoint: {fileID: 1285010422039305446}
   TopCheckPoint: {fileID: 1285010421897431701}
   groundLayer:

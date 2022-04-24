@@ -39,6 +39,7 @@ public class Bomb : MonoBehaviour
         {
             anim.SetTrigger("Explore");
             playerHealth.Health_Current -= damage;
+            gameObject.layer = LayerMask.NameToLayer("Invincible");
         }
     }
 
